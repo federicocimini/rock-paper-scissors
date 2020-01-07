@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rock Paper Scissors</title>
+</head>
+<body>
+    <script>
+
+        // Returns the same string capitalized (all lowercase except first character)
+
+        function capitalize(sentence) {  
+            if (sentence == null) {
+                return sentence;
+            } else {
+                let firstLetter = sentence.charAt(0);
+                sentence = sentence.toLowerCase();
+                sentence = sentence.replace(sentence.charAt(0),firstLetter.toUpperCase());
+                return sentence;
+            }
+        }
+        
+        // random play by computer
+
+        function computerPlay() {
+            let randomSelection;
+            let a = Math.floor(Math.random() * 3);
+            switch (a) {
+                case 0:
+                    randomSelection = "Rock";
+                    break;
+                case 1:
+                    randomSelection = "Paper";
+                    break;
+                case 2:
+                    randomSelection = "Scissors";
+                    break;
+            }
+            return randomSelection;
+        }
+
+        // return the result of a round
+
+        function playRound(playerSelection,computerSelection) {     
+            if (playerSelection == computerSelection) {
+                roundResult = `You Tie! ${playerSelection} ties with ${computerSelection}.`;
+            } else if (playerSelection == "Rock") {
+                switch (computerSelection) {
+                    case "Scissors":
+                        roundResult = `You Win! ${playerSelection} beats ${computerSelection}.`;
+                        break;
+                    case "Paper":
+                        roundResult = `You Lose! ${computerSelection} beats ${playerSelection}.`;
+                        break;
+                }
+            } else if (playerSelection == "Paper") {
+                switch (computerSelection) {
+                    case "Rock":
+                        roundResult = `You Win! ${playerSelection} beats ${computerSelection}.`;
+                        break;
+                    case "Scissors":
+                        roundResult = `You Lose! ${computerSelection} beat ${playerSelection}.`;
+                        break;
+                }
+            } else if (playerSelection == "Scissors") {
+                switch (computerSelection) {
+                    case "Paper":
+                        roundResult = `You Win! ${playerSelection} beat ${computerSelection}.`;
+                        break;
+                    case "Rock":
+                        roundResult = `You Lose! ${computerSelection} beats ${playerSelection}.`;
+                        break;
+                }
+            } else {
+                roundResult = "Worng weapon. Choose between Rock, Paper or Scissors..."
+            }
+            return roundResult;
+        }
+        
+
+        // play 5 rounds and reveal who is the winner
+
+        function game() {
+            let i;
+            let playerScore = 0;
+            let computerScore = 0;
+            for (i = 1; i <= 5; i++) {
+                let playerSelection = prompt("Choose your weapon (rock, paper or scissors):","No selection.");
+                playerSelection = capitalize(playerSelection);
+                playRound(playerSelection,computerPlay());
+                let indicator = roundResult.slice(0,5);
+                if (indicator == "You W") {
+                    playerScore++;
+                } else if (indicator == "You L") {
+                    computerScore++;
+                } else if (indicator == "You T") {
+                    i--;
+                    console.log(roundResult + " Try again!");
+                    continue;
+                } else {
+                    i--;
+                    console.log(roundResult);
+                    continue;
+                }
+                console.log(`Round ${i} results:\
+                            ${roundResult}\
+                            Your score: ${playerScore}\
+                            Computer score : ${computerScore}`);
+            }
+            revealResult(playerScore,computerScore);
+        }
+
+        function revealResult(playerScore,computerScore) {
+            let finalResult = (playerScore > computerScore) ? "You win the game!" : "You loose the game...";
+            console.log(`Final Results:\
+                        Your score: ${playerScore}\
+                        Computer score : ${computerScore}\
+                        ${finalResult}`);
+        }
+
+
+        game();
+
+    </script>
+</body>
+</html>
