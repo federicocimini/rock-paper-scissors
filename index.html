@@ -5,11 +5,29 @@
     <title>Rock Paper Scissors</title>
 </head>
 <body>
+    <button id="rock">Rock!</button>
+    <button id="paper">Paper!</button>
+    <button id="scissors">Scissors!</button>
+    <div id="results">
+
+    </div>
+    <div id="score">
+
+    </div>
+    <div id="final">
+
+    </div>
+
     <script>
 
         let playerScore = 0;
         let computerScore = 0;
         let resetRound = false;
+
+        const results = document.querySelector('#results');
+        const buttons = document.querySelectorAll('button');
+        const score = document.querySelector('#score');
+        const finalScore = document.querySelector('#final');
 
         // Returns the same string capitalized (all lowercase except first character)
 
@@ -45,7 +63,8 @@
 
         // return the result of a round
 
-        function playRound(playerSelection,computerSelection) {     
+        function playRound(playerSelection) {     
+            let computerSelection = computerPlay();
             if (playerSelection == computerSelection) {
                 roundResult = `You Tie! ${playerSelection} ties with ${computerSelection}.`;
                 resetRound = true;
@@ -88,41 +107,24 @@
             }
             return roundResult;
         }
+
+
         
-
-        // play 5 rounds and reveal who is the winner
-
-        function game() {
-            let i;
-            for (i = 1; i <= 5; i++) {
-                resetRound = false;
-                let playerSelection = prompt("Choose your weapon (rock, paper or scissors):","No selection.");
-                playerSelection = capitalize(playerSelection);
-                playRound(playerSelection,computerPlay());
-                if (resetRound == true) {
-                    console.log(roundResult);
-                    console.log("Try again!");
-                    i--;
-                    continue;
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                let playerSelection = capitalize(button.id);
+                playRound(playerSelection);
+                results.textContent = roundResult;
+                score.textContent = `Your score: ${playerScore} // Computer Score: ${computerScore}`;
+                if (playerScore === 5) {
+                    finalScore.textContent = "End of the game! You win!";
+                } else if (computerScore === 5) {
+                    finalScore.textContent = "End of the game! You lose...";
                 }
-                console.log(`Round ${i} results:\
-                            ${roundResult}\
-                            Your score: ${playerScore}\
-                            Computer score : ${computerScore}`);
-            }
-            revealResult(playerScore,computerScore);
-        }
-
-        function revealResult(playerScore,computerScore) {
-            let finalResult = (playerScore > computerScore) ? "You win the game!" : "You loose the game...";
-            console.log(`Final Results:\
-                        Your score: ${playerScore}\
-                        Computer score : ${computerScore}\
-                        ${finalResult}`);
-        }
+            });
+        });        
 
 
-        game();
 
     </script>
 </body>
